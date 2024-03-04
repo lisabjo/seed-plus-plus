@@ -1,0 +1,46 @@
+[
+  {
+    "Id": 1,
+    "Name": "Root"
+  },
+  {
+    "Id": 2,
+    "Name": "Flowers",
+    "ParentId": 1
+  },
+  {
+    "Id": 4,
+    "Name": "Annual flowers",
+    "ParentId": 2
+  },
+  {
+    "Id": 5,
+    "Name": "Perennial flowers",
+    "ParentId": 2
+  },
+  {
+    "Id": 3,
+    "Name": "Vegetables",
+    "ParentId": 1
+  },
+  {
+    "Id": 6,
+    "Name": "Brassicas",
+    "ParentId": 3
+  },
+  {
+    "Id": 7,
+    "Name": "Legumes",
+    "ParentId": 3
+  },
+  {
+    "Id": 8,
+    "Name": "Leaf vegetables",
+    "ParentId": 3
+  },
+  {
+    "Id": 9,
+    "Name": "Fruit vegetables",
+    "ParentId": 3
+  }
+]

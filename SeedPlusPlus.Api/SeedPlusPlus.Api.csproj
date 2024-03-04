@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SeedPlusPlus.Core\SeedPlusPlus.Core.csproj" />
+      <ProjectReference Include="..\SeedPlusPlus.CppClr\SeedPlusPlus.CppClr.vcxproj" />
+      <ProjectReference Include="..\SeedPlusPlus.Data\SeedPlusPlus.Data.csproj" />
+    </ItemGroup>
+
+    <Target Name="CopyCustomFiles" AfterTargets="Build">
+        <!-- Specify the source file path relative to the source project's output directory -->
+        <ItemGroup>
+            <CustomFiles Include="$(SolutionDir)SeedPlusPlus.Data\bin\$(Configuration)\**\Resources\categories.json" />
+        </ItemGroup>
+
+        <!-- Copy the file to the startup project's output directory -->
+        <Copy SourceFiles="@(CustomFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    </Target>
+    
+</Project>
