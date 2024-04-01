@@ -1,5 +1,6 @@
-using System.Runtime.InteropServices;
-using SeedPlusPlus.Api.Endpoints;
+using SeedPlusPlus.Api.Categories;
+using SeedPlusPlus.Api.Orders;
+using SeedPlusPlus.Api.Products;
 using SeedPlusPlus.Data;
 
 // const string filePath = @"C:\Users\lisab\Desktop\GitHub\seed-plus-plus\SeedPlusPlus.Api\bin\Debug\net7.0\Resources\categories.json";
@@ -34,4 +35,3 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.Run();
-

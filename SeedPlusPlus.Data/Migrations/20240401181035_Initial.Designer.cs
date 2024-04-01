@@ -11,7 +11,7 @@ using SeedPlusPlus.Data;
 namespace SeedPlusPlus.Data.Migrations
 {
     [DbContext(typeof(SeedPlusPlusTestContext))]
-    [Migration("20240401090040_Initial")]
+    [Migration("20240401181035_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -19,6 +19,23 @@ namespace SeedPlusPlus.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.15");
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.Batch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Batch");
+                });
 
             modelBuilder.Entity("SeedPlusPlus.Core.Products.Product", b =>
                 {
@@ -36,18 +53,14 @@ namespace SeedPlusPlus.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Sku")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("VarietyId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("VarietyId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Products");
                 });
@@ -151,7 +164,7 @@ namespace SeedPlusPlus.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SeedPlusPlus.Core.Products.Seeds.Variety", b =>
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.ProductType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,12 +174,60 @@ namespace SeedPlusPlus.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("PlantHeightInCm")
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductType");
+                });
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.StockKeepingUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("BatchId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Variety");
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StockKeepingUnit");
+                });
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProductTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("SeedPlusPlus.Core.Products.Product", b =>
@@ -177,15 +238,15 @@ namespace SeedPlusPlus.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SeedPlusPlus.Core.Products.Seeds.Variety", "Variety")
+                    b.HasOne("SeedPlusPlus.Core.Products.ProductType", "Type")
                         .WithMany()
-                        .HasForeignKey("VarietyId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
-                    b.Navigation("Variety");
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("SeedPlusPlus.Core.Products.ProductCategory", b =>
@@ -197,9 +258,43 @@ namespace SeedPlusPlus.Data.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.StockKeepingUnit", b =>
+                {
+                    b.HasOne("SeedPlusPlus.Core.Products.Batch", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId");
+
+                    b.HasOne("SeedPlusPlus.Core.Products.Product", "Product")
+                        .WithMany("Skus")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.Tag", b =>
+                {
+                    b.HasOne("SeedPlusPlus.Core.Products.ProductType", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("ProductTypeId");
+                });
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.Product", b =>
+                {
+                    b.Navigation("Skus");
+                });
+
             modelBuilder.Entity("SeedPlusPlus.Core.Products.ProductCategory", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("SeedPlusPlus.Core.Products.ProductType", b =>
+                {
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

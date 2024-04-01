@@ -1,4 +1,4 @@
-﻿namespace SeedPlusPlus.Api.Dtos;
+﻿namespace SeedPlusPlus.Api.Orders;
 
 public record OrderResponse
 {

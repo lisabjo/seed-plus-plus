@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeedPlusPlus.Data;
 
@@ -10,9 +11,11 @@ using SeedPlusPlus.Data;
 namespace SeedPlusPlus.Data.Migrations
 {
     [DbContext(typeof(SeedPlusPlusTestContext))]
-    partial class SeedPlusPlusTestContextModelSnapshot : ModelSnapshot
+    [Migration("20240401183850_TagProductTypePivotTable")]
+    partial class TagProductTypePivotTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.15");

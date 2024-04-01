@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeedPlusPlus.Core.Orders;
-using SeedPlusPlus.Core.Orders.Exceptions;
 
 namespace SeedPlusPlus.Data;
 

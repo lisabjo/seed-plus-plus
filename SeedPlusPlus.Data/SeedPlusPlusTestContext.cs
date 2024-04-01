@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using SeedPlusPlus.Core.Orders;
 using SeedPlusPlus.Core.Products;
 
 namespace SeedPlusPlus.Data;

@@ -1,4 +1,4 @@
-﻿using SeedPlusPlus.Core.Orders.Exceptions;
+﻿using SeedPlusPlus.Core.Exceptions;
 
 namespace SeedPlusPlus.Core.Orders;
 

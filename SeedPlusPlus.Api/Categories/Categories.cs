@@ -1,6 +1,6 @@
 ﻿using SeedPlusPlus.Data;
 
-namespace SeedPlusPlus.Api.Endpoints;
+namespace SeedPlusPlus.Api.Categories;
 
 public static class Categories
 {

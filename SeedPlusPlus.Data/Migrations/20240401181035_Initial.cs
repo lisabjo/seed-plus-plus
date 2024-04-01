@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,6 +13,20 @@ namespace SeedPlusPlus.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Batch",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreatedAt = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    ExpiresAt = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Batch", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ProductCategories",
                 columns: table => new
@@ -34,17 +49,16 @@ namespace SeedPlusPlus.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Variety",
+                name: "ProductType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    PlantHeightInCm = table.Column<int>(type: "INTEGER", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Variety", x => x.Id);
+                    table.PrimaryKey("PK_ProductType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,11 +67,10 @@ namespace SeedPlusPlus.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Sku = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    VarietyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    TypeId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,9 +82,56 @@ namespace SeedPlusPlus.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_Variety_VarietyId",
-                        column: x => x.VarietyId,
-                        principalTable: "Variety",
+                        name: "FK_Products_ProductType_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ProductType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tag",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tag_ProductType_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductType",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockKeepingUnit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BatchId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockKeepingUnit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockKeepingUnit_Batch_BatchId",
+                        column: x => x.BatchId,
+                        principalTable: "Batch",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StockKeepingUnit_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -103,14 +163,38 @@ namespace SeedPlusPlus.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_VarietyId",
+                name: "IX_Products_TypeId",
                 table: "Products",
-                column: "VarietyId");
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockKeepingUnit_BatchId",
+                table: "StockKeepingUnit",
+                column: "BatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockKeepingUnit_ProductId",
+                table: "StockKeepingUnit",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tag_ProductTypeId",
+                table: "Tag",
+                column: "ProductTypeId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "StockKeepingUnit");
+
+            migrationBuilder.DropTable(
+                name: "Tag");
+
+            migrationBuilder.DropTable(
+                name: "Batch");
+
             migrationBuilder.DropTable(
                 name: "Products");
 
@@ -118,7 +202,7 @@ namespace SeedPlusPlus.Data.Migrations
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
-                name: "Variety");
+                name: "ProductType");
         }
     }
 }

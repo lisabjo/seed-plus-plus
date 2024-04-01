@@ -7,9 +7,10 @@ public class SeedPlusPlusContext : DbContext
 {
     public SeedPlusPlusContext(DbContextOptions options) : base(options) { }
     
-    // public DbSet<Order> Orders { get; set; }
-    public DbSet<ProductCategory> ProductCategories { get; set; }
-    public DbSet<Product> Products { get; set; }
+    // public DbSet<Order> Orders { get; init; }
+    public DbSet<Product> Products { get; init; }
+    public DbSet<ProductCategory> ProductCategories { get; init; }
+    public DbSet<StockKeepingUnit> Skus { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,5 +20,9 @@ public class SeedPlusPlusContext : DbContext
             .HasForeignKey(pc => pc.ParentId)
             // .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
             ;
+
+        modelBuilder.Entity<Tag>()
+            .HasMany<ProductType>()
+            .WithMany(pt => pt.Tags);
     }
 }

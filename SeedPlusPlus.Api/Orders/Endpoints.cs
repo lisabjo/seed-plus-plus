@@ -2,9 +2,9 @@
 using SeedPlusPlus.Core.Orders;
 using SeedPlusPlus.Core.Orders.Features;
 
-namespace SeedPlusPlus.Api.Endpoints;
+namespace SeedPlusPlus.Api.Orders;
 
-public static class Orders
+public static class Endpoints
 {
     public static IEndpointRouteBuilder MapOrdersEndpoints(this IEndpointRouteBuilder routeBuilder)
     {
