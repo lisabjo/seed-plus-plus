@@ -8,6 +8,8 @@ public partial class ProductRepository : IProductCategoryRepository
     // TODO: The table should be locked until the update is completed
     public async Task InsertProductCategoryAsync(ProductCategory newCategory, ProductCategory parentCategory)
     {
+        LibC.InsertIt();
+        
         var leftId = parentCategory.Right;
         var rightId = parentCategory.Right + 1;
 
@@ -30,7 +32,7 @@ public partial class ProductRepository : IProductCategoryRepository
         
         await _context.SaveChangesAsync();
     }
-
+    
     public async Task<List<ProductCategory>> GetSubCategoriesAsync(ProductCategory category)
     {
         return await _context.ProductCategories

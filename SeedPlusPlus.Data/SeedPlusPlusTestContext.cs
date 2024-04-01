@@ -69,7 +69,7 @@ public class SeedPlusPlusTestContext : SeedPlusPlusContext
         BuildNestedSet(root, ref currentIdx, hierarchy);
     }
     
-    private static void BuildNestedSet(ProductCategory current, ref int idx, Dictionary<ProductCategory,HashSet<ProductCategory>> hierarchy)
+    private static void BuildNestedSet(ProductCategory current, ref int idx, IReadOnlyDictionary<ProductCategory, HashSet<ProductCategory>> hierarchy)
     {
         current.Left = idx++;
         

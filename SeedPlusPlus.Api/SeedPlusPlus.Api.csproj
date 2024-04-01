@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,7 +18,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SeedPlusPlus.Core\SeedPlusPlus.Core.csproj" />
-      <ProjectReference Include="..\SeedPlusPlus.CppClr\SeedPlusPlus.CppClr.vcxproj" />
       <ProjectReference Include="..\SeedPlusPlus.Data\SeedPlusPlus.Data.csproj" />
     </ItemGroup>
 

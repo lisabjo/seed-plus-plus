@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using SeedPlusPlus.Api.Endpoints;
 using SeedPlusPlus.Data;
 
@@ -8,7 +9,7 @@ using SeedPlusPlus.Data;
 // var categories = JsonSerializer.Deserialize<List<ProductCategory>>(jsonString);
 //
 // Console.WriteLine();
-//
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSqliteDbContext(builder.Configuration.GetConnectionString("SeedsSqlite"));
