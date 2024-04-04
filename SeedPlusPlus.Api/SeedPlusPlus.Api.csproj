@@ -21,10 +21,6 @@
       <ProjectReference Include="..\SeedPlusPlus.Data\SeedPlusPlus.Data.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
-
     <Target Name="CopyCustomFiles" AfterTargets="Build">
         <!-- Specify the source file path relative to the source project's output directory -->
         <ItemGroup>

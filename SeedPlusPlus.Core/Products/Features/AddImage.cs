@@ -1,10 +1,12 @@
+using SeedPlusPlus.Core.Products.Entities;
+
 namespace SeedPlusPlus.Core.Products.Features;
 
-public class AddImage : IUseCase<AddImageInput, object>
+public class AddImage : IUseCase<AddImageInput, Result<bool>>
 {
-    public Task<object> Handle(AddImageInput input)
+    public async Task<Result<bool>> Handle(AddImageInput input)
     {
-        throw new NotImplementedException();
+        return new NotImplementedException();
     }
 }
 

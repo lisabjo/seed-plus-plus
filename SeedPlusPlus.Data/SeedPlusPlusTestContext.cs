@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using SeedPlusPlus.Core.Products;
+using SeedPlusPlus.Core.Products.Entities;
 
 namespace SeedPlusPlus.Data;
 

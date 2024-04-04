@@ -1,15 +1,8 @@
+using SeedPlusPlus.Api;
 using SeedPlusPlus.Api.Categories;
-using SeedPlusPlus.Api.Orders;
 using SeedPlusPlus.Api.Products;
+using SeedPlusPlus.Api.Tags;
 using SeedPlusPlus.Data;
-
-// const string filePath = @"C:\Users\lisab\Desktop\GitHub\seed-plus-plus\SeedPlusPlus.Api\bin\Debug\net7.0\Resources\categories.json";
-//
-// var jsonString = File.ReadAllText(filePath);
-//         
-// var categories = JsonSerializer.Deserialize<List<ProductCategory>>(jsonString);
-//
-// Console.WriteLine();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +10,14 @@ builder.Services.AddSqliteDbContext(builder.Configuration.GetConnectionString("S
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRepositories();
+builder.Services.RegisterHandlers();
 
 var app = builder.Build();
 
 // Register Endpoints
 app.MapProductsEndpoints();
 app.MapCategoriesEndpoints();
-app.MapOrdersEndpoints();
+app.MapTagsEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
