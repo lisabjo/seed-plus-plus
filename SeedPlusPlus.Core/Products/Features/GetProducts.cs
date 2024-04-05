@@ -27,5 +27,6 @@ public class GetProducts : IUseCase<GetProductsInput, Result<IEnumerable<GetProd
     }
 }
 
+// TODO: Map in the API instead, keep the Products as they are here and return them in the output
 public record GetProductsInput(int? CategoryId);
 public record GetProductsOutput(int Id, string Name, decimal Price, int TypeId, int CategoryId, int NumberInStock);

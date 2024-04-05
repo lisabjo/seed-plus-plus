@@ -9,7 +9,6 @@ public class SeedPlusPlusContext : DbContext
 {
     public SeedPlusPlusContext(DbContextOptions options) : base(options) { }
     
-    // public DbSet<Order> Orders { get; init; }
     public DbSet<Product> Products { get; init; }
     public DbSet<ProductCategory> ProductCategories { get; init; }
     public DbSet<StockKeepingUnit> Skus { get; init; }

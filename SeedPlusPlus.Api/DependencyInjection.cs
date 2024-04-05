@@ -30,6 +30,7 @@ public static class DependencyInjection
     {
         return serviceCollection
             .AddScoped<IUseCase<CreateTagInput, Result<CreateTagOutput>>, CreateTag>()
+            .AddScoped<IUseCase<GetAllTagsInput, Result<GetAllTagsOutput>>, GetTags>()
             .AddScoped<IUseCase<GetTagInput, Result<GetTagOutput>>, GetTagById>()
             .AddScoped<IUseCase<DeleteTagInput, Result<bool>>, DeleteTag>();
     }

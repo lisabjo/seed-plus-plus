@@ -14,24 +14,26 @@ public class TagRepository : ITagRepository
         _context = context;
     }
 
+    public Task<Result<List<Tag>>> GetAllAsync()
+    {
+        return Result<List<Tag>>.CreateAsync(() =>
+            _context.Tags.ToListAsync());
+    }
+    
     public async Task<Result<Tag>> FindById(int id)
     {
         var result = await _context.Tags.FirstOrDefaultAsync(t => t.Id == id);
         return result is not null ? result : new NotFoundException<Tag>();
     }
-    
+
     public async Task<Result<Tag>> AddTag(Tag tag)
     {
-        try
+        return await Result<Tag>.CreateAsync(async () =>
         {
             await _context.Tags.AddAsync(tag);
             await _context.SaveChangesAsync();
             return tag;
-        }
-        catch (Exception e)
-        {
-            return e;
-        }
+        });
     }
 
     public async Task<Result<bool>> DeleteTagAsync(int id)

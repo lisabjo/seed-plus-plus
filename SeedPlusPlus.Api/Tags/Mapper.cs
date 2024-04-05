@@ -16,9 +16,9 @@ public static class Mapper
     public static TagResponse ToTagResponse(this CreateTagOutput output)
     {
         return new TagResponse(
-            Id: output.Id,
-            Name: output.Name,
-            Type: output.Type.ToLower()
+            Id: output.Tag.Id,
+            Name: output.Tag.Name,
+            Type: output.Tag.Type.ToString().ToLower()
         );
     }
     
@@ -28,6 +28,15 @@ public static class Mapper
             Id: output.Id,
             Name: output.Name,
             Type: output.Type.ToLower()
+        );
+    }
+    
+    public static TagResponse ToTagResponse(this Tag tag)
+    {
+        return new TagResponse(
+            Id: tag.Id,
+            Name: tag.Name,
+            Type: tag.Type.ToString().ToLower()
         );
     }
 }

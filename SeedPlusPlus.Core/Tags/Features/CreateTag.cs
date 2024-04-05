@@ -4,27 +4,16 @@ public class CreateTag : IUseCase<CreateTagInput, Result<CreateTagOutput>>
 {
     private readonly ITagRepository _repository;
 
-    public CreateTag(ITagRepository repository)
-    {
-        _repository = repository;
-    }
-    
+    public CreateTag(ITagRepository repository) => _repository = repository;
+
     public Task<Result<CreateTagOutput>> Handle(CreateTagInput input)
     {
-        var tag = new Tag
-        {
-            Name = input.Name,
-            Type = input.Type
-        };
-        return _repository.AddTag(tag)
-            .MapAsync(t => new CreateTagOutput(
-                    Id: t.Id,
-                    Name: t.Name,
-                    Type: t.Type.ToString().ToLower()
-                )
+        return _repository
+            .AddTag(new Tag { Name = input.Name, Type = input.Type })
+            .MapAsync(t => new CreateTagOutput(t)
             );
     }
 }
 
 public record CreateTagInput(string Name, TagType Type);
-public record CreateTagOutput(int Id, string Name, string Type);
+public record CreateTagOutput(Tag Tag);

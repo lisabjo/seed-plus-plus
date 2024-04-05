@@ -9,6 +9,10 @@ public static class TagsEndpoints
     public static IEndpointRouteBuilder MapTagsEndpoints(this IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder
+            .MapGet("/tags", GetAll)
+            .WithName("GetAllTags");
+        
+        routeBuilder
             .MapGet("/tags/{id:int}", Get)
             .WithName("GetTag");
         
@@ -21,6 +25,17 @@ public static class TagsEndpoints
             .WithName("DeleteTag");
         
         return routeBuilder;
+    }
+
+    private static Task<Results<Ok<IEnumerable<TagResponse>>, NotFound>> GetAll(
+        IUseCase<GetAllTagsInput, Result<GetAllTagsOutput>> handler
+        )
+    {
+        return handler.Handle(new GetAllTagsInput())
+            .MatchAsync<GetAllTagsOutput, Results<Ok<IEnumerable<TagResponse>>, NotFound>>(
+                x => TypedResults.Ok(x.Tags.Select(t => t.ToTagResponse())),
+                e => TypedResults.NotFound()
+            );
     }
 
     private static async Task<Results<Ok<TagResponse>, NotFound>> Get(

@@ -10,16 +10,14 @@ public class GetCategories : IUseCase<GetCategoriesInput, Result<IEnumerable<Cat
 
     public async Task<Result<IEnumerable<CategoryOutput>>> Handle(GetCategoriesInput input)
     {
-        var x = await _repository
+        var categories = await _repository
             .FindCategoryById(input.ParentId ?? 0)
             .MatchAsync(
                 c => _repository.GetAllCategoriesAsync(c), 
                 e => _repository.GetAllCategoriesAsync());
-            
-        // Ugly workaround
-        var y = await x;
 
-        return y.Map(categories => categories
+        return (await categories)
+            .Map(c => c
             .Select(pc => new CategoryOutput(
                 Id: pc.Id,
                 Name: pc.Name,

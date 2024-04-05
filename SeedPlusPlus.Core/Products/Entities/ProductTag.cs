@@ -19,8 +19,8 @@ public class ProductTag
             TagType.String => Encoding.UTF8.GetString(Value),
             TagType.Boolean => BitConverter.ToBoolean(Value),
             TagType.SingleMonth => Value[0],
-            TagType.Months => (MonthFlags)BitConverter.ToUInt16(Value),  // TODO: Explain
-            TagType.Integer => BitConverter.ToInt32(Value),  // TODO: Ok?
+            TagType.Months => (MonthFlags)BitConverter.ToUInt16(Value),
+            TagType.Integer => BitConverter.ToInt32(Value),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

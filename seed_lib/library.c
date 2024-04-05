@@ -6,7 +6,7 @@
 #include <string.h>
 
 sqlite3 *db;
-char *err_msg = 0;  // move to function?
+char *err_msg = 0;
 
 static int hydrate_product(void *data, int argc, char **argv, char **az_col_name);
 
@@ -25,10 +25,10 @@ Product* find_product_by_id(char *db_path, int id) {
         return NULL;
     }
 
-    Product *product = 0;
-
     char sql[100];
     snprintf(sql, sizeof(sql), "SELECT * FROM Products WHERE Id = %d LIMIT 1", id);
+
+    Product *product = 0;
 
     rc = sqlite3_exec(db, sql, hydrate_product, &product, &err_msg);
     if (rc != SQLITE_OK) {

@@ -1,13 +1,9 @@
 namespace SeedPlusPlus.Core;
 
-//TODO: document
-
 /// <summary>
-/// Encapsulates a monad that could contain either a T or an Exception.
-/// Map ...
-/// Match ...
+/// Result{T} abstracts from the errors that might occur under manipulation of T,
+/// wrapping T in a type that allows you to operate on T as through there are no errors.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public readonly struct Result<T>
 {
     private readonly T? _value;
@@ -36,10 +32,28 @@ public readonly struct Result<T>
         }
     }
     
+    public static async Task<Result<T>> CreateAsync(Func<Task<T>> fn)
+    {
+        try
+        {
+            return await fn();
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
+    /// <summary>
+    /// Applies the specified function to the wrapped value,
+    /// unless it is an error in which case it short-circuits
+    /// and propagates the error. If the function throws and error
+    /// then an error Result is created.
+    /// </summary>
     public Result<TOut> Map<TOut>(Func<T, TOut> fn)
     {
         if (_error is not null)
-            return new Result<TOut>(_error);
+            return _error;
 
         try
         {
@@ -47,14 +61,18 @@ public readonly struct Result<T>
         }
         catch (Exception e)
         {
-            return new Result<TOut>(e);
+            return e;
         }
     }
     
+    /// <summary>
+    /// Also known as flat map. The function fn returns a Result,
+    /// therefore it is not wrapped in another Result.
+    /// </summary>
     public Result<TOut> Map<TOut>(Func<T, Result<TOut>> fn)
     {
         if (_error is not null)
-            return new Result<TOut>(_error);
+            return _error;
 
         try
         {
@@ -62,10 +80,13 @@ public readonly struct Result<T>
         }
         catch (Exception e)
         {
-            return new Result<TOut>(e);
+            return e;
         }
     }
     
+    /// <summary>
+    /// The function fn returns a Task, therefore it is not wrapped in a Result.
+    /// </summary>
     public async Task<Result<TOut>> MapAsync<TOut>(Func<T, Task<Result<TOut>>> fn)
     {
         if (_error is not null)
@@ -81,6 +102,9 @@ public readonly struct Result<T>
         }
     }
 
+    /// <summary>
+    /// Applies the success function to the value, or the fail function to the error.
+    /// </summary>
     public TOut Match<TOut>(Func<T, TOut> fnSuccess, Func<Exception, TOut> fnFail)
     {
         return _error is null 
@@ -88,7 +112,10 @@ public readonly struct Result<T>
             : fnFail(_error);
     }
 
-
+    /// <summary>
+    /// Returns a new collection of the filtered values from a collection that
+    /// might contain Results with values and with errors.
+    /// </summary>
     public static IEnumerable<TOut> FilterOutErrors<TOut>(IEnumerable<Result<TOut>> items)
     {
         return items

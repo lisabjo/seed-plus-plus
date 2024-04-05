@@ -6,9 +6,6 @@ internal static class LibC
 {
     private const string PathToLib = "../seed_lib/cmake-build-debug/libseed_lib.dylib";
     
-    [DllImport(PathToLib, EntryPoint="init", CharSet=CharSet.Unicode)]
-    static extern void Init(string path);
-    
     [DllImport(PathToLib, EntryPoint="free_product")]
     public static extern void FreeProduct(IntPtr productPtr);
     
@@ -26,6 +23,7 @@ internal static class LibC
             }
         });
     }
+    
     [DllImport(PathToLib, EntryPoint="find_product_by_id")]
     private static extern IntPtr _FindProductById(string dbPath, int id);
 }

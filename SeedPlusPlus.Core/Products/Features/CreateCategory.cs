@@ -26,5 +26,3 @@ public class CreateCategory : IUseCase<CreateCategoryInput, Result<CategoryOutpu
 }
 
 public record CreateCategoryInput(string Name, int ParentId);
-// ParentId nullable in case it is a new root category
-
