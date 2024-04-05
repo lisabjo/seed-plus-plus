@@ -27,12 +27,13 @@ public static class Mapper
     {
         var images = request.Images ?? Array.Empty<ProductImageRequest>();
         var tags = request.Tags ?? Array.Empty<ProductTagRequest>();
+        var typeId = request.TypeId == 0 ? 1 : request.TypeId;
         
         return new CreateProductInput
         (
             Name: request.Name,
             Price: request.Price,
-            TypeId: request.TypeId,
+            TypeId: typeId,
             CategoryId: request.CategoryId,
             Images: images
                 .Select(i => new ProductImageInput(i.ImageId))

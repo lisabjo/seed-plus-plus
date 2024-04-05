@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeedPlusPlus.Core.Products;
 using SeedPlusPlus.Core.Products.Entities;
 using SeedPlusPlus.Core.Tags;
 
@@ -27,5 +26,13 @@ public class SeedPlusPlusContext : DbContext
         modelBuilder.Entity<Tag>()
             .HasMany<ProductType>()
             .WithMany(pt => pt.Tags);
+
+        modelBuilder.Entity<Product>()
+            .HasMany(p => p.ProductTags)
+            .WithOne(t => t.Product);
+        
+        modelBuilder.Entity<Product>()
+            .HasMany(p => p.ProductImages)
+            .WithOne(t => t.Product);
     }
 }

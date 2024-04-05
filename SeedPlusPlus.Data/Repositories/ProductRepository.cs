@@ -39,17 +39,23 @@ public partial class ProductRepository : IProductRepository
             .ToArrayAsync();
     }
 
-    public async Task<Result<Product>> FindByIdAsync(int id, bool includeAll)
+    public Task<Result<Product>> FindByIdAsync(int id, bool includeAll)
     {
-        var query = _context.Products.AsQueryable();
-        if (includeAll)
-            query = query
-                .Include(p => p.ProductImages)
-                .Include(p => p.ProductTags);
-        
+        return includeAll
+            ? FetchProductsIncludeAll(id)
+            : FetchProducts(id);
+    }
+
+    private async Task<Result<Product>> FetchProductsIncludeAll(int id)
+    {
         try
         {
-            var product = await query.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context
+                .Products
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductTags)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            
             return product is null 
                 ? new NotFoundException<Product>() 
                 : product;
@@ -58,10 +64,26 @@ public partial class ProductRepository : IProductRepository
         {
             return e;
         }
-        
-        // TODO: Use Create? CreateAsync?
     }
-
+    
+    private async Task<Result<Product>> FetchProducts(int id)
+    {
+        try
+        {
+            var product = await _context
+                .Products
+                .FirstOrDefaultAsync(p => p.Id == id);
+            
+            return product is null 
+                ? new NotFoundException<Product>() 
+                : product;
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+    }
+    
     public async Task<Result<Product>> AddProductAsync(Product product)
     {
         try

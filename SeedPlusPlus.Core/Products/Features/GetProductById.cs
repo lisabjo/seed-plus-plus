@@ -24,7 +24,7 @@ public class GetProductById : IUseCase<GetProductByIdInput, Result<GetProductOut
                     CategoryId: p.CategoryId,
                     NumberInStock: p.NumberInStock,
                     Tags: p.ProductTags.Select(pt => new ProductTagOutput(pt)).ToArray(),
-                    Images: p.ProductImages.Select(Helpers.ToProductImageOutput).ToArray()  // TODO are they empty or null
+                    Images: p.ProductImages.Select(Helpers.ToProductImageOutput).ToArray()
                 )
             );
     }
