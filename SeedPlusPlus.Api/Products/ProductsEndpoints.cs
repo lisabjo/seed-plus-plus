@@ -135,7 +135,7 @@ public static class ProductsEndpoints
 }
 
 public record CreateProductRequest(string Name, decimal Price, int TypeId, int CategoryId,
-    ProductImageRequest[] Images, ProductTagRequest[] Tags);
+    ProductImageRequest[]? Images, ProductTagRequest[]? Tags);
 public record ProductImageRequest(int ImageId);
 public record ProductTagRequest(int TagId, string TagType, string Value);
 public record ProductResponse(

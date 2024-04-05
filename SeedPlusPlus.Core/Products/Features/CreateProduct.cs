@@ -92,6 +92,7 @@ public class CreateProduct : IUseCase<CreateProductInput, Result<CreateProductOu
 
 public record CreateProductInput(string Name, decimal Price, int TypeId, int CategoryId,
     ProductImageInput[] Images, ProductTagInput[] Tags);
+
 public record CreateProductOutput(int Id, string Name, decimal Price, int TypeId, int CategoryId, int NumberInStock,
     ProductImageOutput[] Images, ProductTagOutput[] Tags);
 public record ProductTagInput(int TagId, byte[] Value);

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using SeedPlusPlus.Api.Categories;
 using SeedPlusPlus.Core;
@@ -24,16 +25,20 @@ public static class Mapper
 
     public static Result<CreateProductInput> ToCreateProductInput(this CreateProductRequest request)
     {
+        var images = request.Images ?? Array.Empty<ProductImageRequest>();
+        var tags = request.Tags ?? Array.Empty<ProductTagRequest>();
+        
         return new CreateProductInput
         (
             Name: request.Name,
             Price: request.Price,
             TypeId: request.TypeId,
             CategoryId: request.CategoryId,
-            Images: request.Images
-                .Select(i => new ProductImageInput(i.ImageId)).ToArray(),
+            Images: images
+                .Select(i => new ProductImageInput(i.ImageId))
+                .ToArray(),
             Tags: Result<ProductTagInput>
-                .FilterOutErrors(request.Tags.Select(MapTagRequest))
+                .FilterOutErrors(tags.Select(MapTagRequest))
                 .ToArray()
         );
 
